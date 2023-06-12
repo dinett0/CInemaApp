@@ -35,16 +35,22 @@ public class SignUpActivity extends AppCompatActivity {
         String email = fieldEmail.getText().toString();
         String pass = fieldPassword.getText().toString();
 
-        Intent intent = new Intent();
-        if (DB.addUser(name, email, pass) != -1) {
-            Toast.makeText(SignUpActivity.this, "Вы успешно зарегистрировались!", Toast.LENGTH_SHORT).show();
-            intent.putExtra("name", name)
-                    .putExtra("email", email)
-                    .putExtra("password", pass);
-            setResult(RESULT_OK, intent);
-            finish();
+        if(name.equals("")||email.equals("")|| pass.equals(""))
+            Toast.makeText(this, "Введите все поля!", Toast.LENGTH_SHORT).show();
+        else if (DB.getUser(email)){
+            Toast.makeText(this, "Пользователь с таким логином уже зарегистрирован!", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(SignUpActivity.this, "Что-то пошло не так!", Toast.LENGTH_SHORT).show();
+            if (DB.addUser(name, email, pass) != -1) {
+                Intent intent = new Intent();
+                Toast.makeText(SignUpActivity.this, "Вы успешно зарегистрировались!", Toast.LENGTH_SHORT).show();
+                intent.putExtra("name", name)
+                        .putExtra("email", email)
+                        .putExtra("password", pass);
+                setResult(RESULT_OK, intent);
+                finish();
+            } else {
+                Toast.makeText(SignUpActivity.this, "Что-то пошло не так!", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }

@@ -21,6 +21,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button button1, button2;
     private EditText field1, field2;
     String name;
+    private DBHelper DB;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +32,27 @@ public class LoginActivity extends AppCompatActivity {
         field1 = findViewById(R.id.editTextTextEmailAddress);
         field2 = findViewById(R.id.editTextTextPassword);
     }
+
+    public void onClickLogIn(View v) {
+        String login = field1.getText().toString();
+        String pass = field2.getText().toString();
+        DB = new DBHelper(this);
+
+        if(login.equals("") || pass.equals(""))
+            Toast.makeText(this, "Введите все поля!", Toast.LENGTH_SHORT).show();
+        else {
+            if (DB.getUser(login)){
+                if (DB.getPass(login, pass)){
+                    //transfer to the next activity
+                    Toast.makeText(this, "success", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "Неправильный пароль!", Toast.LENGTH_SHORT).show();
+                }
+            } else
+                Toast.makeText(this, "Пользователь с таким именем не зарегистрирован!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
     public void onClickSignUp(View v) {
         Intent intent = new Intent(this, SignUpActivity.class);

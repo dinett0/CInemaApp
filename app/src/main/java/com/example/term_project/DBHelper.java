@@ -52,5 +52,24 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return db.insert(TABLE_NAME, null, cv);
     }
+
+    public Boolean getUser(String email) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_EMAIL + "=?";
+        return db.rawQuery(query, new String[] { email }).moveToFirst();
+    }
+
+    public Boolean getPass(String email, String pass) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = " SELECT " + COLUMN_PASS + " FROM " + TABLE_NAME + " WHERE " + COLUMN_EMAIL + "=?";
+        Cursor cursor = db.rawQuery(query, new String[] { email });
+
+        String dbPassword = "";
+        if (cursor.moveToFirst()) {
+            int passIndex = cursor.getColumnIndex(COLUMN_PASS);
+            dbPassword = cursor.getString(passIndex);
+        }
+        return pass.equals(dbPassword);
+    }
 }
 
