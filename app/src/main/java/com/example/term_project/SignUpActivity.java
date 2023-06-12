@@ -7,11 +7,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class SignUpActivity extends AppCompatActivity {
 
     private Button signUp;
     private EditText fieldName, fieldEmail, fieldPassword;
+    private DBHelper DB;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,6 +23,7 @@ public class SignUpActivity extends AppCompatActivity {
         fieldName = findViewById(R.id.editTextName);
         fieldEmail = findViewById(R.id.editTextEmail);
         fieldPassword = findViewById(R.id.editTextPassword);
+        DB = new DBHelper(this);
     }
     public void onBack(View view) {
         Intent intent = new Intent(this, LoginActivity.class);
@@ -28,11 +31,20 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     public void onSignUp(View view) {
+        String name = fieldName.getText().toString();
+        String email = fieldEmail.getText().toString();
+        String pass = fieldPassword.getText().toString();
+
         Intent intent = new Intent();
-        intent.putExtra("name", fieldName.getText().toString())
-                .putExtra("email", fieldEmail.getText().toString())
-                .putExtra("password", fieldPassword.getText().toString());
-        setResult(RESULT_OK, intent);
-        finish();
+        if (DB.addUser(name, email, pass) != -1) {
+            Toast.makeText(SignUpActivity.this, "Вы успешно зарегистрировались!", Toast.LENGTH_SHORT).show();
+            intent.putExtra("name", name)
+                    .putExtra("email", email)
+                    .putExtra("password", pass);
+            setResult(RESULT_OK, intent);
+            finish();
+        } else {
+            Toast.makeText(SignUpActivity.this, "Что-то пошло не так!", Toast.LENGTH_SHORT).show();
+        }
     }
 }

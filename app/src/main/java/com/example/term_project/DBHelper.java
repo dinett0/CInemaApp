@@ -2,6 +2,7 @@ package com.example.term_project;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
@@ -41,7 +42,7 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void addUser(String name, String email, String password) {//igor identical to ai
+    public long addUser(String name, String email, String password) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
@@ -49,7 +50,7 @@ public class DBHelper extends SQLiteOpenHelper {
         cv.put(COLUMN_EMAIL, email);
         cv.put(COLUMN_PASS, password);
 
-        long result = db.insert(TABLE_NAME, null, cv);
+        return db.insert(TABLE_NAME, null, cv);
     }
 }
 
