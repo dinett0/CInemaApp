@@ -43,8 +43,11 @@ public class LoginActivity extends AppCompatActivity {
         else {
             if (DB.getUser(login)){
                 if (DB.getPass(login, pass)){
-                    //transfer to the next activity
-                    Toast.makeText(this, "success", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(this, FragmentContainer.class);
+                    intent.putExtra("login", login)
+                            .putExtra("password", pass)
+                            .putExtra("name", DB.getName(login));
+                    startActivity(intent);
                 } else {
                     Toast.makeText(this, "Неправильный пароль!", Toast.LENGTH_SHORT).show();
                 }

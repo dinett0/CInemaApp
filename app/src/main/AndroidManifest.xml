@@ -12,6 +12,9 @@
         android:theme="@style/Theme.TERM_PROJECT"
         tools:targetApi="31">
         <activity
+            android:name=".FragmentContainer"
+            android:exported="false" />
+        <activity
             android:name=".SignUpActivity"
             android:exported="false" />
         <activity

@@ -71,5 +71,17 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         return pass.equals(dbPassword);
     }
+
+    public String getName(String email) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = " SELECT " + COLUMN_NAME + " FROM " + TABLE_NAME + " WHERE " + COLUMN_EMAIL + "=?";
+        Cursor cursor = db.rawQuery(query, new String[] { email });
+        cursor.moveToFirst();
+
+        int passIndex = cursor.getColumnIndex(COLUMN_NAME);
+        String dbName = cursor.getString(passIndex);
+
+        return dbName;
+    }
 }
 
